@@ -6,6 +6,13 @@
 #         self.right = right
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        '''
+        Time Complexity:
+    O(n): We visit each node once, where n is the number of nodes in the tree.
+        
+        Space Complexity:
+        O(h), where h is the height of the tree. In the worst case, if the tree is completely unbalanced, the recursion depth could be O(n), but in a balanced tree, it will be O(log n).
+        '''
         if not root:
             return None
         temp = root.left
