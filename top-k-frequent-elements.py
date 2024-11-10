@@ -11,7 +11,7 @@ class Solution:
             counter[i] = 1 + counter.get(i, 0)
         
         #################################
-        # 1st Solution
+        # # 1st Solution
         heap = []
 
         '''
@@ -41,16 +41,68 @@ class Solution:
         for _ in range(len(nums)+1):
             freq_bucket.append([])
         
-        for num, freq in counter:
+        for num, freq in counter.items():
             freq_bucket[freq].append(num)
         
         ans = []
-        freq= freq[::-1] #reverse the array
+        freq_bucket= freq_bucket[::-1] #reverse the array
         for i in range(k):
-            for j in freq[i]:
+            for j in freq_bucket[i]:
                 ans.append(j)
                 if len(ans) == k:
                     return ans
+
+    '''
+    Using Quick- Select
+    '''
+    import random
+
+    def partition(nums, left, right, pivot_idx):
+        pivot_freq = nums[pivot_idx][1]
+
+        # move the pivot to the end of the array
+        nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
+
+        store_idx = left
+        for i in range(left, right):
+            if arr[i] < pivot:
+                arr[store_idx], arr[i] = arr[i], arr[store_idx]
+                store_idx += 1
+        
+        arr[right], arr[store_idx] = arr[store_idx], arr[right]
+        return store_idx
+
+    def quickselect(nums, left, right, k):
+        '''
+        select the k-th largest element in nums within left..right
+        '''
+
+        if left == right:
+            return
+        
+        pivot_idx = random.rantint(left, right)
+
+        # Find the pivot position in left and right sorted arrangement
+        pivot_idx = partition(nums, left, right, pivot_idx)
+
+        if pivot_idx == k:
+            return
+        
+        elif pivot_idx < k:
+            quickselect(nums, pivot_idx + 1, right, k)
+        else:
+            quickselect(nums, left, pivot_idx - 1, k)
+
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        freq = Counter(nums)
+
+        freq_list = list(freq.items)  #(element, frequency) pairs
+
+        n = len(freq_list)
+        quickselect(freq_list, 0, n-1, n-k)
+
+        return [ele for ele, frew in freq_list[n-k:]]
+
 
         
         
