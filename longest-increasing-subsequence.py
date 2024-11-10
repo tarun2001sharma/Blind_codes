@@ -1,8 +1,28 @@
+
+from bisect import bisect_left
+
 class Solution:
     '''
     - Dynamic Programming Solution (O(n2) time complexity)
     - Binary search solution (O(nlogn) solution)
     '''
+
+    def lengthOfLIS(self, nums):
+        if len(nums) < 2:
+            return len(nums)
+        
+        lis = []
+        lis.append(nums[0])
+        
+        for i in range(1, len(nums)):
+            if nums[i] > lis[-1]:
+                lis.append(nums[i])
+            else:
+                index = bisect_left(lis, nums[i])
+                lis[index] = nums[i]
+        
+        return len(lis)
+
    
     # def lengthOfLIS(self, nums: List[int]) -> int:
     #     def binary_search(sub, num):
@@ -28,14 +48,16 @@ class Solution:
         
     #     return len(sub)  # The length of the 'sub' list is the length of the LIS
 
-    def lengthOfLIS(self, nums: List[int]) -> int:
-        LIS = [1] * (len(nums))
+
+''''DP Solution Below'''
+    # def lengthOfLIS(self, nums: List[int]) -> int:
+    #     LIS = [1] * (len(nums))
 
 
-        for i in range(len(nums)):
-            for j in range(i):
-                if nums[j]<nums[i]:
-                    LIS[i] = max(LIS[i], LIS[j] + 1)
-        # print(LIS)
-        return max(LIS)
+    #     for i in range(len(nums)):
+    #         for j in range(i):
+    #             if nums[j]<nums[i]:
+    #                 LIS[i] = max(LIS[i], LIS[j] + 1)
+    #     # print(LIS)
+    #     return max(LIS)
         
